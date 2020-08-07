@@ -10,7 +10,8 @@ public class UI extends JFrame implements ActionListener{
 
     JButton jb1, jb2, jb3,jb4,jb5,jb6,jb7, jb8;  //创建按钮
     JLabel jlb1, jlb2, jlb3;   //标签
-
+    User currentUser = null;
+    
     public static void main(String[] args) {
         new UI();
     }
@@ -28,7 +29,7 @@ public class UI extends JFrame implements ActionListener{
 
 
         jlb1 = new JLabel("Java大作业银行");
-        jlb1.setFont(new   java.awt.Font("Dialog",   1,   23)); //设置字体类型， 是否加粗，字号
+        jlb1.setFont(new   java.awt.Font("Dialog",   1,   23)); 
         jlb2 = new JLabel("欢迎您");
         jlb2.setFont(new   java.awt.Font("Dialog",   1,   20));
         jlb3 = new JLabel("请您选择服务");
@@ -43,10 +44,10 @@ public class UI extends JFrame implements ActionListener{
         jb7.addActionListener(this);
         jb8.addActionListener(this);
 
-        this.setTitle("银行管理系统");  //设置窗体标题
-        this.setSize(450, 500); 		//设置窗体大小
-        this.setLocation(400, 200);		//设置位置
-        this.setLayout(null);			//设置布局，不采用布局
+        this.setTitle("银行管理系统");  
+        this.setSize(450, 500); 		
+        this.setLocation(400, 200);		
+        this.setLayout(null);			
 
         //设置按钮的位置和大小
         jb1.setBounds( 0,50,90,60);
@@ -63,7 +64,7 @@ public class UI extends JFrame implements ActionListener{
         jlb2.setBounds(190,160,150,50);
         jlb3.setBounds(150,250,150,50);
 
-        this.add(jb1);   //加入窗体
+        this.add(jb1);   
         this.add(jb2);
         this.add(jb3);
         this.add(jb4);
@@ -75,10 +76,10 @@ public class UI extends JFrame implements ActionListener{
         this.add(jlb2);
         this.add(jlb3);
 
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);  //设置可关闭
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);  
 
-        this.setVisible(true);  //设置可见
-        this.setResizable(false);	//设置不可拉伸大小
+        this.setVisible(true);  
+        this.setResizable(false);	
     }
 
 
@@ -87,7 +88,7 @@ public class UI extends JFrame implements ActionListener{
         // TODO Auto-generated method stub
         if (e.getActionCommand()=="查询")
         {
-            //String order = e.getActionCommand();
+            
         }
         else if (e.getActionCommand()=="贷款")
         {
