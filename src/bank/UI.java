@@ -1,3 +1,4 @@
+package bank;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,10 +12,14 @@ public class UI extends JFrame implements ActionListener{
     User currentUser = new User() ;
 
     public static void main(String[] args) {
-        new UI();
+        new UI(1063500879);
     }
 
-    public UI()
+    public UI(){
+
+    }
+
+    public UI(int userID)
     {
         jb1 = new JButton("查询");
         jb2 = new JButton("贷款");

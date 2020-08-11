@@ -1,3 +1,5 @@
+package bank;
+
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 
 import javax.sql.DataSource;
@@ -19,7 +21,7 @@ public class JDBCUtils {
         try {
             //1.加载配置文件
             Properties pro = new Properties();
-            pro.load(JDBCUtils.class.getClassLoader().getResourceAsStream("druid.properties"));
+            pro.load(JDBCUtils.class.getClassLoader().getResourceAsStream("bank/druid.properties"));
             //2.获取DataSource
             ds = DruidDataSourceFactory.createDataSource(pro);
         } catch (IOException e) {

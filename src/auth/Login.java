@@ -1,6 +1,8 @@
 package auth;
 
 
+import bank.UI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -78,6 +80,8 @@ public class Login extends JFrame {
 
                         if (resultset.next()) {
                             System.out.println("登录成功");
+                            dispose();
+                            new UI(Integer.parseInt(userID));
                         } else {
                             System.out.println("登录失败");
                         }
