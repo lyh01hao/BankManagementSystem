@@ -1,9 +1,6 @@
 
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -88,19 +85,19 @@ public class UI extends JFrame implements ActionListener{
         // TODO Auto-generated method stub
         if (e.getActionCommand()=="查询")
         {
-            currentUser.showInfo();
+            currentUser.showInfoUI();
         }
         else if (e.getActionCommand()=="贷款")
         {
-
+            currentUser.getLoan().showLendUI();
         }
         else if (e.getActionCommand()=="还贷")
         {
-
+            currentUser.getLoan().showPayBackUI();
         }
         else if (e.getActionCommand()=="转账")
         {
-
+            currentUser.getDemandDeposit().showUI3();
         }
         else if (e.getActionCommand()=="存活期")
         {
@@ -108,18 +105,25 @@ public class UI extends JFrame implements ActionListener{
         }
         else if (e.getActionCommand()=="取活期")
         {
-
+            currentUser.getDemandDeposit().showUI2();
         }
         else if (e.getActionCommand()=="存定期")
         {
-
+            currentUser.createTimeDeposit();
         }
         else if (e.getActionCommand()=="取定期")
         {
-
+            currentUser.showTimeDeposit();
         }
 
 
     }
 
+    static public boolean userExist(String username){
+        return false;
+    }
+
+    public static User findUser(){
+        return null;
+    }
 }
