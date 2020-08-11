@@ -1,8 +1,8 @@
+package bank;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
 import java.util.ArrayList;
 //    private static final long serialVersionUID = 1L;
 public class User {

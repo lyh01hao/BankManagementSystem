@@ -1,3 +1,5 @@
+package bank;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.swing.*;
