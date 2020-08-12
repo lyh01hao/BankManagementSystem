@@ -1,7 +1,12 @@
 package bank;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.*;
 
@@ -9,7 +14,9 @@ public class UI extends JFrame implements ActionListener{
 
     JButton jb1, jb2, jb3,jb4,jb5,jb6,jb7, jb8;
     JLabel jlb1, jlb2, jlb3;
-    User currentUser = new User() ;
+    private int userID;
+    User currentUser =  null;
+
 
     public static void main(String[] args) {
         new UI(1063500879);
@@ -21,6 +28,10 @@ public class UI extends JFrame implements ActionListener{
 
     public UI(int userID)
     {
+        this.userID = userID;
+        currentUser = findUser(userID);
+
+
         jb1 = new JButton("查询");
         jb2 = new JButton("贷款");
         jb3 = new JButton("还贷");
@@ -124,11 +135,43 @@ public class UI extends JFrame implements ActionListener{
 
     }
 
-    static public boolean userExist(String username){
-        return false;
+    static public boolean userExist(int id){
+        JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
+        String sql = "SELECT * FROM t_user WHERE user_id = ?";
+        List<Map<String, Object>> list = template.queryForList(sql, id);
+        if(list.size()==0){
+            return false;
+        }else{
+            return true;
+        }
+
     }
 
-    public static User findUser(){
-        return null;
+    public  User findUser(int id){
+        JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
+        String sql1 = "SELECT * FROM t_user WHERE user_id = ?";
+        Map<String, Object> result = template.queryForMap(sql1, id);
+        String username =(String)result.get("user_name");
+        double demandDeposit = (Double)result.get("demand_deposit");
+        double loanQuota = (Double)result.get("loan_quota");
+        double usedQuota = (Double)result.get("used_quota");
+        double balance = (Double)result.get("balance");
+        System.out.println(loanQuota);
+        System.out.println(username);
+        System.out.println(balance);
+        User user = new User(id,username,demandDeposit,loanQuota,usedQuota,balance);
+        String sql2 = "SELECT * FROM t_timedeposit WHERE user_id = ?";
+        List<Map<String, Object>> timedepo = template.queryForList(sql2, id);
+        for (int i = 0; i < timedepo.size(); i++) {
+            Map<String, Object> resultMap =  timedepo.get(i);
+            int timedepoID = (Integer)resultMap.get("id");
+            double principal = (Double)resultMap.get("principal");
+            double cash = (Double)resultMap.get("cash");
+            int period = (Integer)resultMap.get("period");
+            java.sql.Date sqlDate = (java.sql.Date)resultMap.get("date");
+            Date date = new Date(sqlDate.getTime());
+            user.getTimeDeposits().add(new TimeDeposit(timedepoID,username,id,principal,cash,period,date));
+        }
+        return user;
     }
 }

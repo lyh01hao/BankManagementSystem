@@ -11,7 +11,8 @@ import java.util.regex.Pattern;
 
 public class DemandDeposit implements ActionListener {
     String username;
-    double cash = 789; //活期账户的钱数
+    int userID;
+    double cash = 0; //活期账户的钱数
     JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
     JFrame jf = new JFrame();//存款界面用
     JButton jb1 = new JButton("确定存款");//存款界面用
@@ -46,7 +47,7 @@ public class DemandDeposit implements ActionListener {
             double money =  Double.parseDouble(jtf1.getText());
             if(money>=0){
                 cash += money;
-//                mysqlUpdate();
+                mysqlUpdate();
                 String balance = "您的账户余额为:" + cash;
                 jl1 .setText(balance);
                 jtf1.setText("");
@@ -73,7 +74,7 @@ public class DemandDeposit implements ActionListener {
             double money =  Double.parseDouble(jtf1_draw.getText());
             if(money <= cash ){
                 cash -= money;
-//                mysqlUpdate();
+                mysqlUpdate();
                 String balance = "您的账户余额为:" + cash;
                 jl1_draw.setText(balance);
                 jtf1_draw.setText("");
@@ -90,17 +91,16 @@ public class DemandDeposit implements ActionListener {
         if(jtf1_trans.getText().isEmpty()||jtf2_trans.getText().isEmpty()){
             JOptionPane.showMessageDialog(null,"输入为空,请重新输入!","提示信息",JOptionPane.WARNING_MESSAGE);
         }else if (isDoubleOrFloat(jtf2_trans.getText())){
-            String reciever = jtf1_trans.getText();
+            int reciever = Integer.parseInt(jtf1_trans.getText());
             if(UI.userExist(reciever)){
                 double money =  Double.parseDouble(jtf2_trans.getText());
                 if(money<=cash){
                     cash -= money;
-//                    mysqlUpdate();
-                    User rec = UI.findUser();
-                    rec.getDemandDeposit().add(money);
-                    /*
-                    加入数据库,加入数据库
-                     */
+                    mysqlUpdate();
+//                    User rec = UI.findUser();
+//                    rec.getDemandDeposit().add(money);
+                    String sql = "UPDATE t_user SET demand_deposit = demand_deposit + ? WHERE user_id = ?";
+                    template.update(sql,money,reciever);
                     String balance = "您的账户余额为:" + cash;
                     jl1_trans .setText(balance);
                     jtf1_trans.setText("");
@@ -181,7 +181,7 @@ public class DemandDeposit implements ActionListener {
         jl1_trans.setText(balance);
         jl1_trans.setBounds(5,5,200,20);
         jf_trans.add(jl1_trans);
-        jl2_trans.setText("收款人:");
+        jl2_trans.setText("收款人id:");
         jl2_trans.setBounds(15,60,140,40);
         jl3_trans.setText("转账金额:");
         jl3_trans.setBounds(15,100,140,40);
@@ -221,8 +221,8 @@ public class DemandDeposit implements ActionListener {
 
 
     public void mysqlUpdate(){
-        String sql = "update user SET demand_deposit =" +cash+"Where username =?";
-        template.update(sql,username);
+        String sql = "update t_user SET demand_deposit =" +cash+"Where user_id =?";
+        template.update(sql,userID);
     }
 
     public static boolean isDoubleOrFloat(String str) {

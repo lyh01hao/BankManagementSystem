@@ -8,7 +8,8 @@ import java.awt.event.ActionListener;
 
 public class Loan implements ActionListener {
     String username;//User的构造方法对其进行了初始化
-    double quota = 0.5;//贷款额度
+    int userID;
+    double quota = 100;//贷款额度
     double dueBalance = 0;//应还金额
     JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
     double usedQuota = 0;
@@ -41,8 +42,8 @@ public class Loan implements ActionListener {
             if(money<=quota){
                 quota = quota - money;
                 usedQuota += money;
-                dueBalance += money;
-//                mysqlUpdate();
+                dueBalance = dueBalance + money *1.1;
+                mysqlUpdate();
                 String balance = "您的剩余额度为:" + quota;
                 String duebalanc = "您的待还金额为:" + dueBalance;
                 jl3_lend.setText(duebalanc);
@@ -55,21 +56,6 @@ public class Loan implements ActionListener {
         }else{
             JOptionPane.showMessageDialog(null, "输入金额不合法!","提示信息",JOptionPane.WARNING_MESSAGE);
         }
-        /**
-         * 原来的代码
-         */
-//        if(money <= quota)
-//        {
-//            quota = quota - money;
-//            usedQuota += money;
-//            dueBalance += money;
-//            String sql = "update user SET balance =" + dueBalance +"WHERE username =?";
-//            template.update(sql,username);
-//            String sql2 = "update user SET used_quota =" + usedQuota +"WHERE username =?";
-//            template.update(sql2,username);
-//        }else{
-//            System.out.println("穷鬼给爷爬！");
-//        }
     }
 
     public synchronized void run(){
@@ -94,7 +80,7 @@ public class Loan implements ActionListener {
             JOptionPane.showMessageDialog(null,"金额为空,请重新输入!","提示信息",JOptionPane.WARNING_MESSAGE);
         }else if (DemandDeposit.isDoubleOrFloat(jtf1_back.getText())){
             double money =  Double.parseDouble(jtf1_back.getText());
-            if(money>=dueBalance|| money <0){
+            if(!(money>dueBalance|| money <0)){
                 double difference = dueBalance - usedQuota; //应还金额减去已用额度等于利息
                 dueBalance -= money;
                 if(money > difference){//还的钱比利息多,额度会增加,把利息还完,剩下还的钱会加额度
@@ -102,7 +88,7 @@ public class Loan implements ActionListener {
                     usedQuota -= money - difference;
                 }
 
-//                mysqlUpdate();
+                mysqlUpdate();
                 String balance = "您的剩余额度为:" + quota;
                 String duebalanc = "您的待还金额为:" + dueBalance;
                 jl3_back.setText(duebalanc);
@@ -199,9 +185,9 @@ public class Loan implements ActionListener {
     }
 
     public void mysqlUpdate(){
-            String sql = "update user SET balance =" + dueBalance +"WHERE username =?";
-            template.update(sql,username);
-            String sql2 = "update user SET used_quota =" + usedQuota +"WHERE username =?";
-            template.update(sql2,username);
+            String sql = "update t_user SET balance =" + dueBalance +"WHERE user_id =?";
+            template.update(sql,userID);
+            String sql2 = "update t_user SET used_quota =" + usedQuota +"WHERE user_id =?";
+            template.update(sql2,userID);
     }
 }

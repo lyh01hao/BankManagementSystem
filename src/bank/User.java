@@ -3,7 +3,10 @@ package bank;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 //    private static final long serialVersionUID = 1L;
 public class User {
 
@@ -11,11 +14,28 @@ public class User {
     private DemandDeposit demandDeposit = new DemandDeposit();//不想弄成private的了,麻烦
     private Loan loan = new Loan();
     private String username;
+    private int userID;
 
-    public void User(String username){
+    public User(Integer user_id, String user_name, Double demand_deposit, Double loan_quota, Double used_quota, Double balance) {
+    }
+
+
+    public User(String username){
         this.username = username;
         this.demandDeposit.username = username;
         this.loan.username = username;
+    }
+
+    public User(int userID, String username, double demandDeposit, double loanQuota, double usedQuota, double balance){
+        System.out.println("User初始化");
+        this.userID = userID;
+        this.username = username;
+        this.demandDeposit.userID = userID;
+        this.loan.userID = userID;
+        this.demandDeposit.cash = demandDeposit;
+        this.loan.quota = loanQuota;
+        this.loan.usedQuota = usedQuota;
+        this.loan.dueBalance = balance;
     }
 
     @Override
@@ -55,7 +75,7 @@ public class User {
         jf.setLayout(null);
         jf.setSize(500,500);
         jf.setTitle("账户信息");
-
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         JTextArea jta = new JTextArea();
         String info = "尊敬的" + username + "用户:" + "\n"
                     + "您的账户存款情况为:"+"\n"
@@ -65,12 +85,12 @@ public class User {
         for(TimeDeposit i :timeDeposits){
             timeDepositCount++;
             String isDue ;
-            if(i.IsDue()){
+            if(i.isDue()){
                 isDue = "已到期";
             }else{
                 isDue = "未到期";
             }
-            info +="定期账户（" + timeDepositCount + ")：" + " 现金为：" + i.getCash() + " 存款期数为：" + i.getPeriod() + " 是否到期：" + isDue +"\n";
+            info +="定期账户（" + timeDepositCount + ")：" + " 现金为：" + i.getCash() + " 存款期数为：" + i.getPeriod() + " 存款时间:" + sdf.format(i.getDate())+" 是否到期:"+ isDue +"\n";
         }
         info += "\n"+"您的贷款情况：" + "剩余额度:" + loan.quota +" 待还金额：" + loan.dueBalance;
 
@@ -84,7 +104,7 @@ public class User {
     public void createTimeDeposit(){
         TimeDeposit account = new TimeDeposit();
         timeDeposits.add(account);
-        account.showUI(username);
+        account.showUI(username,userID);
     }
 
     public void showTimeDeposit(){
@@ -92,18 +112,19 @@ public class User {
         jf.setLayout(null);
         jf.setSize(500,500);
         jf.setTitle("取出定期存款");
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
         int timeDepositCount = 0;
         String info="定期存款信息:\n";
         for(TimeDeposit i :timeDeposits){
             timeDepositCount++;
             String isDue ;
-            if(i.IsDue()){
+            if(i.isDue()){
                 isDue = "已到期";
             }else{
                 isDue = "未到期";
             }
-            info +="定期账户（" + timeDepositCount + ")：" + " 现金为：" + i.getCash() + " 存款期数为：" + i.getPeriod() + " 是否到期：" + isDue +"\n";
+            info +="定期账户（" + timeDepositCount + ")：" + " 现金为：" + i.getCash() + " 存款期数为：" + i.getPeriod() + " 存款时间:" + sdf.format(i.getDate())+" 是否到期:"+isDue+"\n";
         }
 
         JTextArea jta = new JTextArea();
@@ -165,8 +186,6 @@ public class User {
         return demandDeposit;
     }
 
-    public static void main(String[] args) {
-        new User().showTimeDeposit();
-    }
+
 
 }
