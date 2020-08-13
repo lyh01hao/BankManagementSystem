@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,13 @@ public class UI extends JFrame implements ActionListener{
     {
         this.userID = userID;
         currentUser = findUser(userID);
+
+        JLabel clock = new JLabel();
+        setTime(clock);
+        clock.setBounds(165,50,200,30);
+
+
+
 
 
         jb1 = new JButton("查询");
@@ -89,6 +97,7 @@ public class UI extends JFrame implements ActionListener{
         this.add(jlb1);
         this.add(jlb2);
         this.add(jlb3);
+        this.add(clock);
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
@@ -173,5 +182,19 @@ public class UI extends JFrame implements ActionListener{
             user.getTimeDeposits().add(new TimeDeposit(timedepoID,username,id,principal,cash,period,date));
         }
         return user;
+    }
+    public void setTime(JLabel clock){
+        Timer timer = new Timer(1000, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //获取当前时间
+                long timemillis = System.currentTimeMillis();
+                //转换日期显示格式
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                clock.setText(df.format(new Date(timemillis)));
+            }
+        });
+        //启动线程
+        timer.start();
     }
 }

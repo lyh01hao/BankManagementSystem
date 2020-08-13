@@ -16,7 +16,8 @@ public class User {
     private String username;
     private int userID;
 
-    public User(Integer user_id, String user_name, Double demand_deposit, Double loan_quota, Double used_quota, Double balance) {
+    public User() {
+
     }
 
 
