@@ -20,7 +20,7 @@ public class UI extends JFrame implements ActionListener{
 
 
     public static void main(String[] args) {
-        new UI(1063500879);
+        new UI(1063500879);//测试用 , 若无数据库连接,请修改UI构造方法(第33行)
     }
 
     public UI(){
@@ -30,7 +30,7 @@ public class UI extends JFrame implements ActionListener{
     public UI(int userID)
     {
         this.userID = userID;
-        currentUser = findUser(userID);
+        currentUser = findUser(userID);//若无数据库连接,可修改为,为测试图形界面,可将这行修改为 currentUser = findUser(userID);
 
         JLabel clock = new JLabel();
         setTime(clock);

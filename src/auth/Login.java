@@ -1,6 +1,7 @@
 package auth;
 
 
+import bank.JDBCUtils;
 import bank.UI;
 
 import javax.swing.*;
@@ -63,7 +64,7 @@ public class Login extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    connection = DButil.getConnection();
+                    connection = JDBCUtils.getConnection();
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -89,7 +90,7 @@ public class Login extends JFrame {
                     } catch (SQLException | NoSuchAlgorithmException throwables) {
                         throwables.printStackTrace();
                     } finally {
-                        DButil.close(connection, preparedStatement, resultset);
+                        JDBCUtils.close(resultset, preparedStatement, connection);
                     }
                 }
 
