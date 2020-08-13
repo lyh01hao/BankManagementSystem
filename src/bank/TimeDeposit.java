@@ -114,10 +114,12 @@ public class TimeDeposit implements Serializable, ActionListener {
 
         }
     }
+
     public void increase(){
         cash *= interestRate;
         timeCount++;
     }
+
     public double withdraw (){
         double result;//最终能取出来的钱数
         if (isDue){

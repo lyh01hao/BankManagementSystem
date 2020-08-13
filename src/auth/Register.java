@@ -1,5 +1,7 @@
 package auth;
 
+import bank.JDBCUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -88,7 +90,7 @@ public class Register extends JFrame {
                 int userID = random.nextInt(1000000000) + 1000000000;//生成十亿到二十亿的随机数，用来当作用户id
                 Boolean flag = true;
                 try {
-                    connection = DButil.getConnection();
+                    connection = JDBCUtils.getConnection();
                     String sql = "select user_id from t_user where user_id = ?";
                     preparedStatement = connection.prepareStatement(sql);
                     preparedStatement.setInt(1, userID);
@@ -100,14 +102,14 @@ public class Register extends JFrame {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 } finally {
-                    DButil.close(connection, preparedStatement, resultset);
+                    JDBCUtils.close(resultset, preparedStatement, connection);
                 }
                 System.out.println(userID);
 
                 if (userPassword1.equals(userPassword2) && userName.length() <= 10 && userName.length() >= 0 && flag && userPassword2.length() >= 10 && userPassword2.length() <= 18) {
                     String sql = "insert into t_user (user_id,user_name,user_password) values (?,?,?)";
                     try {
-                        connection = DButil.getConnection();
+                        connection = JDBCUtils.getConnection();
                         preparedStatement = connection.prepareStatement(sql);
                         preparedStatement.setInt(1, userID);
                         preparedStatement.setString(2, userName);
@@ -119,7 +121,7 @@ public class Register extends JFrame {
                     } catch (SQLException | NoSuchAlgorithmException throwables) {
                         throwables.printStackTrace();
                     } finally {
-                        DButil.close(connection, preparedStatement, resultset);
+                        JDBCUtils.close(resultset, preparedStatement, connection);
                     }
                 }
             }

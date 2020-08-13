@@ -221,7 +221,7 @@ public class DemandDeposit implements ActionListener {
 
 
     public void mysqlUpdate(){
-        String sql = "update user SET demand_deposit =" +cash+"Where username =?";
+        String sql = "update user SET demand_deposit ="+cash+"Where username =?";
         template.update(sql,username);
     }
 
